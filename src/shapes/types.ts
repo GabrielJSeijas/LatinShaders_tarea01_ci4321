@@ -1,6 +1,6 @@
 import type { FixedFunction } from '../vendor/ff/ff';
 
-// Una figura que se puede dibujar. Cada figura va a vivir en su propio archivo en src/shapes/
+// Una figura que se puede dibujar
 
 export interface Shape {
   name: string;

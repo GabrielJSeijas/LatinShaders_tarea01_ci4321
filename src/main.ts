@@ -30,7 +30,7 @@ ff.disable(LIGHTING);
 // Figuras creadas una sola vez, en el orden en que se ciclan con "Cambiar figura"
 const shapes = [createTriangle(gl), createSquare(gl), createHexagon(gl), createCircle(gl)];
 
-// Colores disponibles, en el orden en que se ciclan con "Cambiar color"
+// Colores disponibles en el orden en que se ciclan con Cambiar color
 const colors: { name: string; value: Color }[] = [
   { name: 'rojo', value: [1, 0, 0] },
   { name: 'verde', value: [0, 1, 0] },
