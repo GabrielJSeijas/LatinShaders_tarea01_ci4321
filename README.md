@@ -1,57 +1,79 @@
-# RGB Triangle: FixedFunction vs. vanilla WebGL2
+# Tarea 01 - Figuras en WebGL (CI4321)
 
-One RGB triangle, written two ways. Both versions render the same image.
+Proyecto de LatinShaders para la Tarea 1 de Computación Gráfica I. Partimos del triángulo hecho con FixedFunction (FF) y lo extendimos para dibujar cuatro figuras, todas armadas solo con triángulos: un triángulo, un cuadrado, un hexágono y un círculo.
 
-- `src/examples/triangle.ff.ts` uses the FixedFunction (FF) module. The shaders stay hidden.
-- `src/examples/triangle.vanilla.ts` uses raw WebGL2. The shaders are visible.
+## Equipo
 
-## Requirements
+- Gabriel Seijas  19-00036 
+- Angel Valero    18-10436
 
-- Node.js 18 or later (tested with Node 24)
+## Requisitos
+
+- Node.js 18 o superior
 - npm
-- A browser with WebGL2 support
+- Un navegador con soporte para WebGL2
 
-## Run
+## Cómo correrlo
 
-1. Install the dependencies. This is the only step that needs a network connection.
+1. Clonar el repo y entrar a la carpeta:
+
+   ```
+   git clone https://github.com/GabrielJSeijas/LatinShaders_tarea01_ci4321.git
+   cd LatinShaders_tarea01_ci4321
+   ```
+
+2. Instalar las dependencias (este es el único paso que necesita internet):
 
    ```
    npm install
    ```
 
-2. Start the development server.
+3. Levantar el servidor de desarrollo:
 
    ```
    npm run dev
    ```
 
-3. Open `http://localhost:5173` in your browser.
+4. Abrir `http://localhost:5173` en el navegador.
 
-## Use
+## Cómo se usa
 
-- Click "FF (main)" or "Vanilla WebGL2 (second)" to switch versions.
-- Press `T` to toggle with the keyboard.
-- The right panel shows the source file of the active version.
-- The URL hash (`#ff` or `#vanilla`) stores the selection.
+La página arranca mostrando el triángulo en rojo.
 
-## Other commands
+- **Cambiar figura:** pasa por triángulo → cuadrado → hexágono → círculo y vuelve al triángulo.
+- **Cambiar color:** pasa por rojo → verde → azul y vuelve al rojo. El color se mantiene cuando cambias de figura.
 
-| Command           | Action                                          |
-| ----------------- | ----------------------------------------------- |
-| `npm run build`   | Type-check with `tsc` and build to `dist/`      |
-| `npm run preview` | Serve the built `dist/` folder locally          |
+Sobre los botones se muestran la figura y el color actuales.
 
-## Project layout
+## Cómo está hecha cada figura
+
+Cada figura tiene su propio VAO, que solo habilita `ATTRIB.POSITION`. El color se asigna con `ff.setColor`, así que ninguna figura guarda colores en sus buffers. Todas las posiciones están en clip space y todos los triángulos van en sentido antihorario (CCW).
+
+| Figura | Cómo se dibuja |
+| --- | --- |
+| Triángulo | 3 vértices con `drawArrays` y `gl.TRIANGLES` |
+| Cuadrado | 4 vértices y 6 índices con `drawElements` y `gl.TRIANGLES` |
+| Hexágono | 7 vértices (el centro y 6 en el borde) y 18 índices con `drawElements` y `gl.TRIANGLES` |
+| Círculo | `SEGMENTS + 2` vértices generados por una función, dibujados con `drawArrays` y `gl.TRIANGLE_FAN` (`SEGMENTS = 64`) |
+
+## Otros comandos
+
+| Comando | Qué hace |
+| --- | --- |
+| `npm run build` | Revisa los tipos con `tsc` y compila en `dist/` |
+| `npm run preview` | Sirve localmente lo que quedó en `dist/` |
+
+## Estructura
 
 ```
-index.html                 page markup
-src/main.ts                toggle, canvas swap, source panel
-src/examples/shared.ts     vertex data and clear color (#1b1e2b)
-src/examples/triangle.*.ts the two implementations
-src/vendor/ff/             FF v1.0 (read only; do not edit)
+index.html               página con el canvas y los botones
+src/main.ts              crea las figuras, maneja los botones y dibuja
+src/examples/shared.ts   tamaño del canvas, color de fondo y posiciones del triángulo
+src/shapes/              una figura por archivo y la interfaz Shape
+src/vendor/ff/           FixedFunction v1.0 (no se modifica)
 ```
 
-## Troubleshooting
+## Si algo falla
 
-- **Blank page or "WebGL2 is not available."** Enable hardware acceleration in the browser, or try another browser.
-- **Port 5173 is in use.** Stop the other process, or run `npx vite --port 3000`.
+- **La página sale en blanco o dice "WebGL2 is not available.":** activa la aceleración por hardware en el navegador o prueba con otro.
+- **El puerto 5173 está ocupado:** cierra el otro proceso o corre `npx vite --port 3000`.
