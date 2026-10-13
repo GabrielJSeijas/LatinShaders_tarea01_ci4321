@@ -4,8 +4,8 @@ Proyecto de LatinShaders para la Tarea 1 de Computación Gráfica I. Partimos de
 
 ## Equipo
 
-- Gabriel Seijas  19-00036 
-- Angel Valero    18-10436
+- Gabriel Seijas  
+- Angel Valero   
 
 ## Requisitos
 
